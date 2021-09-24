@@ -6,13 +6,19 @@ const mongoose = require('mongoose')
 const productRoutes = require('./api/routes/products')
 const orderRoutes = require('./api/routes/orders')
 
+
+//mongoDb connection
 mongoose.connect('mongodb+srv://admin:' + process.env.MONGO_ATLAS_PW + '@cluster0.k17bm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{
     useNewUrlParser :true,
     useUnifiedTopology: true
 })
 
+mongoose.Promise = global.Promise
+
 // middleware
 app.use(morgan('dev'))
+
+//body parser
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
@@ -35,14 +41,14 @@ app.use((req, res, next) => {
 app.use('/products', productRoutes)
 app.use('/orders', orderRoutes)
 
-
+//404 error
 app.use((req, res, next) => {
     const error = new Error('not found')
     error.status = 404
     next(error);
 })
 
-
+// 500 error
 app.use((error, req, res, next) =>{
     res.status(error.status || 500);
     res.json({
