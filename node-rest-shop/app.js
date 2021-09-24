@@ -1,10 +1,15 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan')
-// const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 
 const productRoutes = require('./api/routes/products')
 const orderRoutes = require('./api/routes/orders')
+
+mongoose.connect('mongodb+srv://admin:' + process.env.MONGO_ATLAS_PW + '@cluster0.k17bm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{
+    useNewUrlParser :true,
+    useUnifiedTopology: true
+})
 
 // middleware
 app.use(morgan('dev'))
